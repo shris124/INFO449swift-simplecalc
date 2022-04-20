@@ -50,11 +50,45 @@ print("Welcome to the UW Calculator Playground")
 //: For this latter set of operations, it is safe to assume that `["count"]` (no additional arguments) is 0, `["avg"]` is also 0, and `["fact"]` is 0. `["1", "fact"]` should return 1, and `["0", "fact"]` should also return 1. (Yes, 0-factorial is 1. True story.)
 //: 
 func calculate(_ args: [String]) -> Int {
-    return -1
+    switch args.last {
+        case "count":
+            return args.count - 1
+        case "avg":
+            
+            var sum = 0
+            for i in 0...(args.count - 1) {
+                sum = sum + (Int(args[i]) ?? 0)
+            }
+            return sum / max(1, args.count - 1)
+        case "fact":
+            if (args.count <= 1 ) {return 0}
+            let num : Int = Int(args[0])!
+            if (num < 0) { return -1 } // case if num is less than 0
+            if (num == 0) { return 1 } // case if num is 1
+            var sum = 1                         // case if num is positive int
+            for i in 1...num {
+                sum = sum * i
+            }
+            return sum
+        default:
+            let num1 : Int = Int(args[0])!
+            let num2 : Int = Int(args[2])!
+            switch args[1] {
+                case "%": return num1 % num2
+                case "+": return num1 + num2
+                case "-": return num1 - num2
+                case "*": return num1 * num2
+                case "/": return num1 / num2
+                default:
+                    return -1
+            }
+                            
+        
+    }
 }
 
 func calculate(_ arg: String) -> Int {
-    return -1
+    return calculate( arg.split(separator: " ").map({ str in String(str) }) )
 }
 
 //: Below this are the test expressions/calls to verify if your code is correct.
@@ -105,7 +139,7 @@ calculate("5 fact") == 120
 //: Implement `calculate([String])` and `calculate(String)` to handle negative numbers. You need only make the tests below pass. (You do not need to worry about "fact"/factorial with negative numbers, for example.)
 //:
 //: This is worth 1 pt
-/*
+
 calculate(["2", "+", "-2"]) == 0
 calculate(["2", "-", "-2"]) == 4
 calculate(["2", "*", "-2"]) == -4
@@ -120,7 +154,7 @@ calculate("2 - -2") == 4
 calculate("-2 / 2") == -1
 
 calculate("1 -2 3 -4 5 count") == 5
-*/
+
  
 //: Implement `calculate([String])` and `calculate(String)` to use and return floating-point values. You need only make the tests below pass. (Factorial of floating-point numbers doesn't make much sense, either.)
 //:
